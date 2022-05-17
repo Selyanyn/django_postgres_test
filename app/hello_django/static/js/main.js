@@ -27,18 +27,27 @@ function getList() {
                 document.body.append(createRecord(k, data[k]['title'], data[k]['text'], data[k]['isFeatured']))
             }
 
-            let i = {
-                "1": {
-                    'title': "her",
-                    'text': 'her',
-                    'is': true
-                },
-                "2": {
-                    'title': "her",
-                    'text': 'her',
-                    'is': true
-                }
+            let btns = document.querySelectorAll('.btn-change');
+            btns.forEach(function (item){
+                item.onclick = function (){
+                    fetch(`http://localhost:8000/` + 'article', {
+                        method: 'PATCH',
+                        body: {
+                            'title': document.querySelector('.input-title').value,
+                            'text': document.querySelector('.input-text').value,
+                            'isFeatured': document.querySelector('.input-isFeatured').value === 'true',
+                            'id': parseInt(item.id.substring(4))
+                        }
+                    })
+                        .then((response) => {
+                            let id = parseInt(item.id.substring(4));
+                            document.getElementById('title-' + id).innerHTML = document.querySelector('.input-title').value;
+                            document.getElementById('text-' + id).innerHTML = document.querySelector('.input-text').value;
+                            document.getElementById('isf-' + id).innerHTML = document.querySelector('.input-isFeatured').value;
+                        })
             }
+        }
+    )
         })
 }
 
@@ -65,31 +74,7 @@ function createRecordPost(){
 }
 
 function patchRecord(){
-    let btns = document.querySelectorAll('.btn-change');
-    btns.forEach(
-        function (item){
-            item.onclick = function (){
-                fetch(`http://localhost:8000/` + 'article', {
-                    method: 'PATCH',
-                    body: {
-                        'title': document.querySelector('.input-title').value,
-                        'text': document.querySelector('.input-text').value,
-                        'isFeatured': document.querySelector('.input-isFeatured').value === 'true',
-                        'id': parseInt(item.id.substring(4))
-                    }
-                    })
-                    .then((response) => {
-                        return response.json()
-                    })
-                    .then((data) => {
-                        let id = parseInt(item.id.substring(4));
-                        document.getElementById('title-' + id).innerHTML = document.querySelector('.input-title').value;
-                        document.getElementById('text-' + id).innerHTML = document.querySelector('.input-text').value;
-                        document.getElementById('isf-' + id).innerHTML = document.querySelector('.input-isFeatured').value;
-                    })
-            }
-        }
-    )
+
 }
 getList();
 createRecordPost();

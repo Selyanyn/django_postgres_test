@@ -5,9 +5,9 @@ function createRecord(id, title, text, isFeatured){
     cnt.classList.add('container');
     cnt.setAttribute('id', id)
     cnt.innerHTML = `
-                    <div class="title margin-right-15">${title}</div>
-                    <div class="text margin-right-15">${text}</div>
-                    <div class="isFeature margin-right-15">${isFeatured}</div>
+                    <div class="title margin-right-15" id="title-${id}">${title}</div>
+                    <div class="text margin-right-15" id="text-${id}">${text}</div>
+                    <div class="isFeature margin-right-15" id="isf-${id}">${isFeatured}</div>
                     <button type="submit" class="btn-delete margin-right-15" id="del-${id}">Удалить</button>
                     <button type="submit" class="btn-change margin-right-15" id="chg-${id}">Изменить</button>
     `
@@ -42,15 +42,15 @@ function getList() {
         })
 }
 
-function createRecord(){
+function createRecordPost(){
     let btn = document.querySelector('.btn-create');
     btn.onclick = function (){
         fetch(`http://localhost:8000/` + 'article', {
             method: 'POST',
             body: {
-                'title': document.querySelector('input-title').value,
-                'text': document.querySelector('input-text').value,
-                'isFeatured': document.querySelector('input-isFeatured').value === 'true',
+                'title': document.querySelector('.input-title').value,
+                'text': document.querySelector('.input-text').value,
+                'isFeatured': document.querySelector('.input-isFeatured').value === 'true',
             }
         })
         .then((response) => {
@@ -65,7 +65,32 @@ function createRecord(){
 }
 
 function patchRecord(){
-
+    let btns = document.querySelectorAll('.btn-change');
+    btns.forEach(
+        function (item){
+            item.onclick = function (){
+                fetch(`http://localhost:8000/` + 'article', {
+                    method: 'PATCH',
+                    body: {
+                        'title': document.querySelector('.input-title').value,
+                        'text': document.querySelector('.input-text').value,
+                        'isFeatured': document.querySelector('.input-isFeatured').value === 'true',
+                        'id': parseInt(item.id.substring(4))
+                    }
+                    })
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((data) => {
+                        let id = parseInt(item.id.substring(4));
+                        document.getElementById('title-' + id).innerHTML = document.querySelector('.input-title').value;
+                        document.getElementById('text-' + id).innerHTML = document.querySelector('.input-text').value;
+                        document.getElementById('isf-' + id).innerHTML = document.querySelector('.input-isFeatured').value;
+                    })
+            }
+        }
+    )
 }
 getList();
-createRecord();
+createRecordPost();
+patchRecord();

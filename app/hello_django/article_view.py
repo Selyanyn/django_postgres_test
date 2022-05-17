@@ -5,31 +5,39 @@ from .models import Article
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+import json
 
 @csrf_exempt
 @api_view(['GET', 'POST', 'PATCH', 'DELETE'])
 def article(request):
     if request.method == 'GET':
-        articles = Article.objects.all()
-        return HttpResponse('\n'.join(map(str, articles)))
+        articles = map(str, Article.objects.all())
+        dict = {}
+        for article in articles:
+            elem = article.split()
+            dict[elem[0]] = {'title': elem[1], 'text': elem[2], 'isFeatured': elem[3]}
+        return HttpResponse(json.dumps(dict))
     elif request.method == 'POST':
-        a = Article(title=request.data['title'],
-                    text=request.data['text'],
-                    isFeatured=request.data['isFeatured'])
+        print('Запрос:', request)
+        data = json.loads(request.body)
+        a = Article(title=data['title'],
+                    text=data['text'],
+                    isFeatured=data['isFeatured'])
         a.save()
         return HttpResponse(a)
     elif request.method == 'PATCH':
-        a = Article.objects.filter(id=request.data['id'])
+        data = json.loads(request.body)
+        a = Article.objects.filter(id=data['id'])
         a.update(
-            title=request.data['title'],
-            text=request.data['text'],
-            isFeatured=request.data['isFeatured']
+            title=data['title'],
+            text=data['text'],
+            isFeatured=data['isFeatured']
         )
         return HttpResponse(a.first())
     elif request.method == 'DELETE':
-        Article.objects.filter(id=request.data['id']).delete()
-        return HttpResponse(request.data['id'])
+        data = json.loads(request.body)
+        Article.objects.filter(id=data['id']).delete()
+        return HttpResponse(data['id'])
     else:
         raise Http404("Unsupported method")
         

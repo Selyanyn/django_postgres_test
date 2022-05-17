@@ -48,7 +48,7 @@ function getList() {
                 }
             })
 
-            let btnsd = document.querySelectorAll('.btn-change');
+            let btnsd = document.querySelectorAll('.btn-delete');
             btnsd.forEach(function (item){
                 item.onclick = function (){
                     fetch(`http://localhost:8000/` + 'article', {

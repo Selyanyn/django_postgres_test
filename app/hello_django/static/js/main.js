@@ -45,9 +45,23 @@ function getList() {
                             document.getElementById('text-' + id).innerHTML = document.querySelector('.input-text').value;
                             document.getElementById('isf-' + id).innerHTML = document.querySelector('.input-isFeatured').value;
                         })
-            }
-        }
-    )
+                }
+            })
+
+            let btnsd = document.querySelectorAll('.btn-change');
+            btnsd.forEach(function (item){
+                item.onclick = function (){
+                    fetch(`http://localhost:8000/` + 'article', {
+                        method: 'DELETE',
+                        body: {
+                            'id': parseInt(item.id.substring(4))
+                        }
+                    })
+                        .then((response) => {
+                            document.getElementById(item.id.substring(4)).remove();
+                        })
+                }
+            })
         })
 }
 
@@ -73,9 +87,5 @@ function createRecordPost(){
     }
 }
 
-function patchRecord(){
-
-}
 getList();
 createRecordPost();
-patchRecord();

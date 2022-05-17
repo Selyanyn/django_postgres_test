@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title>КПП</title>
+</head>
+<body>
+    <div class="create">
+        <form class="form-create">
+            <input type="text" class="input-title">
+            <input type="text" class="input-text">
+            <input type="text" class="input-isFeatured">
+            <button type="submit" class="btn-create">Создать</button>
+        </form>
+    </div>
+    <div class="container">
+        <div class="title margin-right-15">title</div>
+        <div class="text margin-right-15">text</div>
+        <div class="isFeature margin-right-15">Is feature</div>
+        <button type="submit margin-right-15" class="btn-delete margin-right-15">Удалить</button>
+        <button type="submit margin-right-15" class="btn-change-1 margin-right-15">Изменить</button>
+    </div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -7,4 +7,4 @@ class Article(models.Model):
     isFeatured = models.BooleanField(default=False)
     
     def __str__(self):
-        return '{}: {}! {}. featured: {}'.format(self.id, self.title, self.text, self.isFeatured)
+        return '{} {} {} {}'.format(self.id, self.title, self.text, self.isFeatured)

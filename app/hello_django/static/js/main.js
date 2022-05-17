@@ -32,12 +32,12 @@ function getList() {
                 item.onclick = function (){
                     fetch(`http://localhost:8000/` + 'article', {
                         method: 'PATCH',
-                        body: {
+                        body: JSON.stringify({
                             'title': document.querySelector('.input-title').value,
                             'text': document.querySelector('.input-text').value,
                             'isFeatured': document.querySelector('.input-isFeatured').value === 'true',
                             'id': parseInt(item.id.substring(4))
-                        }
+                        })
                     })
                         .then((response) => {
                             let id = parseInt(item.id.substring(4));
@@ -53,9 +53,9 @@ function getList() {
                 item.onclick = function (){
                     fetch(`http://localhost:8000/` + 'article', {
                         method: 'DELETE',
-                        body: {
+                        body: JSON.stringify({
                             'id': parseInt(item.id.substring(4))
-                        }
+                        })
                     })
                         .then((response) => {
                             document.getElementById(item.id.substring(4)).remove();
@@ -70,11 +70,11 @@ function createRecordPost(){
     btn.onclick = function (){
         fetch(`http://localhost:8000/` + 'article', {
             method: 'POST',
-            body: {
+            body: JSON.stringify({
                 'title': document.querySelector('.input-title').value,
                 'text': document.querySelector('.input-text').value,
                 'isFeatured': document.querySelector('.input-isFeatured').value === 'true',
-            }
+            })
         })
         .then((response) => {
             return response.json()

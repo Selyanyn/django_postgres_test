@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from .models import Article
+from django.shortcuts import render
+from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 
@@ -30,3 +32,6 @@ def article(request):
         return HttpResponse(request.data['id'])
     else:
         raise Http404("Unsupported method")
+        
+def mainPage(request):
+    return render(request, 'main.html')
